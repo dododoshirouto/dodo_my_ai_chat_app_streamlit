@@ -1,4 +1,5 @@
 from datetime import datetime
+import pytz
 import json
 import requests
 import streamlit as st
@@ -205,7 +206,7 @@ def main():
                 )
                 response_stream = client.models.generate_content_stream(
                     model="gemini-2.5-flash" if not DEBUG_USE_LITE_MODEL else "gemini-2.5-flash-lite", # ここで使用するモデルを選択
-                    contents=[types.Content(role="user", parts=[types.Part.from_text(text=f"{st.user.name}さんに挨拶して、何を聞きに来たか聞いて\n\n#current time: {datetime.now().isoformat()}\n\n#user name: {st.user.name}")])],
+                    contents=[types.Content(role="user", parts=[types.Part.from_text(text=f"{st.user.name}さんに挨拶して、何を聞きに来たか聞いて\n\n#current time: {datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()}\n\n#user name: {st.user.name}")])],
                     config=generate_content_config,
                 )
                 full_response = ""
@@ -229,7 +230,7 @@ def main():
 
         # --- 4. ユーザーからのメッセージ入力と送信 ---
         if prompt := st.chat_input("何か話しかけてみて"):
-            prompt_send = f"""[user_input]{prompt}[/user_input]\n\n#current time: {datetime.now().isoformat()}\n\n#user name: {st.user.name}"""
+            prompt_send = f"""[user_input]{prompt}[/user_input]\n\n#current time: {datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()}\n\n#user name: {st.user.name}"""
             st.session_state.messages.append({"role": "user", "content": prompt_send})
             with st.chat_message(st.user.name, avatar=st.user.get("picture")):
                 st.markdown(prompt)
