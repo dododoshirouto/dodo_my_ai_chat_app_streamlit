@@ -42,7 +42,7 @@ REVOKE_ENDPOINT = "https://oauth2.googleapis.com/revoke"
 GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY")
 
 # --- 会社のドメインを指定 ---
-REQUIRED_DOMAIN = "aiavatar.com"
+REQUIRED_DOMAIN = st.secrets.get("REQUIRED_DOMAIN")
 
 # OAuthコンポーネントの作成
 oauth2 = OAuth2Component(CLIENT_ID, CLIENT_SECRET, AUTHORIZE_ENDPOINT, TOKEN_ENDPOINT, TOKEN_ENDPOINT, REVOKE_ENDPOINT)
@@ -149,10 +149,11 @@ def main():
                 st.stop()
                 exit()
         else:
-            st.user = {
-                "name": "test",
-                "email": "test",
-            }
+            class User:
+                def __init__(self, name, email):
+                    self.name = name
+                    self.email = email
+            st.user = User("", f"test@{REQUIRED_DOMAIN}")
             
         st.success(f"{st.user.name}さんとしてログイン中")
         st.write("---")
