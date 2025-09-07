@@ -156,6 +156,8 @@ def main():
                     self.name = name
                     self.email = email
                     self.is_logged_in = True
+                def get(self, key):
+                    return None
             st.user = User("", f"test@{REQUIRED_DOMAIN}")
             
         st.write("---")
