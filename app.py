@@ -148,14 +148,16 @@ def main():
                 st.session_state.token = None # 不正なユーザーはログアウトさせる
                 st.stop()
                 exit()
+                
+            st.success(f"{st.user.name}さんとしてログイン中")
         else:
             class User:
                 def __init__(self, name, email):
                     self.name = name
                     self.email = email
+                    self.is_logged_in = True
             st.user = User("", f"test@{REQUIRED_DOMAIN}")
             
-        st.success(f"{st.user.name}さんとしてログイン中")
         st.write("---")
 
         # ↓↓↓ ここから下が、ログイン成功した人だけが見えるチャットアプリ本体 ↓↓↓
