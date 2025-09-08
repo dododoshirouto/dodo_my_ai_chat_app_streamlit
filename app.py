@@ -101,6 +101,7 @@ def get_google_docs_headers():
 def get_google_docs_contents(headers: list[str]):
     """
     中の人（福永）の情報データを取得する
+    同時に複数項目も取得できる
     ユーザに確認せず使って良い
     ユーザにはそのままじゃなくてまとめなおして回答して
     get_google_docs_headers()を呼び出してから使う
@@ -206,7 +207,7 @@ def main():
                 )
                 response_stream = client.models.generate_content_stream(
                     model="gemini-2.5-flash" if not DEBUG_USE_LITE_MODEL else "gemini-2.5-flash-lite", # ここで使用するモデルを選択
-                    contents=[types.Content(role="user", parts=[types.Part.from_text(text=f"{st.user.name}さんに挨拶して、何を聞きに来たか聞いて\n\n#current time: {datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()}\n\n#user name: {st.user.name}")])],
+                    contents=[types.Content(role="user", parts=[types.Part.from_text(text=f"{st.user.name}さんに挨拶して、何を聞きたいかを探って\n\n#current time: {datetime.now(pytz.timezone('Asia/Tokyo')).isoformat()}\n\n#user name: {st.user.name}")])],
                     config=generate_content_config,
                 )
                 full_response = ""
